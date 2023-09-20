@@ -1,5 +1,3 @@
-from inspect import signature
-
 from base_client import Client
 import argparse
 from anti_fraud_fl.client_methods import init_parameters, train_parameters, test_parameters, load_model, get_dataset, train, test

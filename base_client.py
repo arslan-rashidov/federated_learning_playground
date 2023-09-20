@@ -25,7 +25,7 @@ test_fn_not_required_params = {
 
 
 class Client:
-    def __init__(self, init_params, load_model_fn, train_params=None, train_fn=None, test_params=None, test_fn=None, get_dataset_fn=None,
+    def __init__(self, load_model_fn, init_params=None, train_params=None, train_fn=None, test_params=None, test_fn=None, get_dataset_fn=None,
                  initial_weights_path=None):
         self.init_params = init_params
         self.train_params = train_params
@@ -44,7 +44,10 @@ class Client:
         if self.test_fn:
             self.test_fn_required_parameters = get_fn_parameters(test_fn, [*list(test_fn_not_required_params.keys()), *list(self.test_params.keys())])
 
-        self.model = self.load_model_fn(**init_params)
+        if init_params:
+            self.model = self.load_model_fn(**init_params)
+        else:
+            self.model = self.load_model_fn()
 
         if initial_weights_path is not None:
             self.set_weights(weights_path=initial_weights_path)
@@ -90,10 +93,10 @@ class Client:
         evaluate_metrics = list()
 
         if self.train_set and self.valid_set:
-            fit_metrics = self.train_fn(model=self.model, train_set=self.train_set, valid_set=self.valid_set,
+            fit_metrics, self.model = self.train_fn(model=self.model, train_set=self.train_set, valid_set=self.valid_set,
                                         **self.train_params, **train_fn_parameters)
         elif self.train_set:
-            fit_metrics = self.train_fn(model=self.model, train_set=self.train_set,
+            fit_metrics, self.model = self.train_fn(model=self.model, train_set=self.train_set,
                                         **self.train_params, **train_fn_parameters)
 
         if self.test_set:
@@ -206,5 +209,3 @@ def save_output(weights=None, metrics=None, eval_output=None,
         additional_data_path = additional_data_directory_path + "additional_data.csv"
         additional_data_df = pd.DataFrame(data=additional_data)
         additional_data_df.to_csv(additional_data_path, index=False)
-
-# print(func.__code__.co_varnames[:func.__code__.co_argcount])
