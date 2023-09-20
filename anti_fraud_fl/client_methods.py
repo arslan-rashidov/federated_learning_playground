@@ -52,8 +52,7 @@ def get_dataset(dataset_path: str, with_split: bool, test_size: float, shuffle: 
         return test_set
 
 
-def train(model: torch.nn.Module, train_set: torch.utils.data.Dataset, epochs, batch_size, lr,
-          valid_set: torch.utils.data.Dataset = None) -> Tuple[List[Metric], torch.nn.Module]:
+def train(model: torch.nn.Module, train_set: torch.utils.data.Dataset, epochs: int, batch_size: int, lr: float) -> Tuple[List[Metric], torch.nn.Module]:
     train_dataloader = DataLoader(train_set, batch_size=batch_size, shuffle=True)
 
     optimizer = AdamW(params=model.parameters(), lr=lr)
@@ -84,7 +83,7 @@ def train(model: torch.nn.Module, train_set: torch.utils.data.Dataset, epochs, b
         train_epoch_loss /= len(train_dataloader)
         train_epoch_loss_metric.log_value(train_epoch_loss)
 
-    return [train_epoch_loss_metric]
+    return (train_epoch_loss_metric, model)
 
 
 def test(model: torch.nn.Module, test_set: torch.utils.data.Dataset, return_output: bool) -> Union[

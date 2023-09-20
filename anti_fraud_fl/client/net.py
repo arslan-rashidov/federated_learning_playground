@@ -1,9 +1,4 @@
-from collections import OrderedDict
-
-import torch
 import torch.nn as nn
-
-from federated_learning.core.utils import NDArrays
 
 
 class Net(nn.Module):
@@ -39,15 +34,6 @@ class Net(nn.Module):
         x = self.sigmoid_activation(self.second_linear_layer(x))
 
         return x
-
-    def set_weights(self, weights: NDArrays):  # TODO: Specify type of weights and return type
-        state_dict = OrderedDict(
-            {k: torch.tensor(v) for k, v in zip(self.state_dict().keys(), weights)}
-        )
-        self.load_state_dict(state_dict, strict=True)
-
-    def get_weights(self) -> NDArrays:  # TODO: Specify return type
-        return [val.cpu().numpy() for _, val in self.state_dict().items()]
 
 
 def load_model(n_features=30, hidden_dim=32) -> Net:
