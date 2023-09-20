@@ -83,7 +83,7 @@ def train(model: torch.nn.Module, train_set: torch.utils.data.Dataset, epochs: i
         train_epoch_loss /= len(train_dataloader)
         train_epoch_loss_metric.log_value(train_epoch_loss)
 
-    return (train_epoch_loss_metric, model)
+    return ([train_epoch_loss_metric], model)
 
 
 def test(model: torch.nn.Module, test_set: torch.utils.data.Dataset, return_output: bool) -> Union[
