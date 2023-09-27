@@ -23,7 +23,8 @@ class FedAvgStrategy(WeightsAggregationStrategy):
             else:
                 assert layer_names == weights_layer_names
             weights_layer_values = weights.values()
-            num_examples = pd.read_csv(result[1])['trained_num_examples'].iloc[0]
+            num_examples = pd.read_csv(result[1])['train_num_examples'].iloc[0]
+            print(num_examples)
             results_transformed.append((weights_layer_values, num_examples))
 
         del results

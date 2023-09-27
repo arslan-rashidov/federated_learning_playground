@@ -13,9 +13,13 @@ from anti_fraud_fl.client.dataset import load_dataset, preprocess_data, Transact
 from anti_fraud_fl.client.net import Net
 from metric import Metric
 
-init_parameters = {
+model_parameters = {
     'n_features': 30,
-    'hidden_dim': 32
+    'hidden_dim': 16
+}
+
+dataset_parameters = {
+    'shuffle': True
 }
 
 train_parameters = {
